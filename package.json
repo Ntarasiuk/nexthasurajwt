@@ -1,0 +1,41 @@
+{
+  "name": "spotify_test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "^4.0.0",
+    "@apollo/react-ssr": "^4.0.0",
+    "@hapi/iron": "^6.0.0",
+    "apollo-boost": "^0.4.9",
+    "apollo-link-context": "^1.0.20",
+    "apollo-link-ws": "^1.0.20",
+    "axios": "^0.21.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "btoa": "^1.2.1",
+    "cookie": "^0.4.1",
+    "express": "^4.17.1",
+    "graphql": "^15.4.0",
+    "isomorphic-unfetch": "^3.1.0",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "next": "10.0.1",
+    "next-connect": "^0.9.1",
+    "next-with-apollo": "^5.1.0",
+    "nookies": "^2.5.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "qs": "^6.9.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "subscriptions-transport-ws": "^0.9.18",
+    "swr": "^0.3.9",
+    "tailwindcss": "^1.9.6"
+  }
+}
