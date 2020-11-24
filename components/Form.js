@@ -6,6 +6,12 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
       <span>Username</span>
       <input type="text" name="username" required />
     </label>
+    {!isLogin && (
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required />
+      </label>
+    )}
     <label>
       <span>Password</span>
       <input type="password" name="password" required />

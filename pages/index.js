@@ -16,7 +16,9 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className={styles.main}>
-          <h1 className={styles.title}>Hasura, Next, Passport JWT</h1>
+          <h1 className={styles.title}>
+            Hasura 😈 + NextJS ⚛ + Apollo 🚀 + Passport 🔐
+          </h1>
 
           <div className={styles.description}>
             {user ? (
