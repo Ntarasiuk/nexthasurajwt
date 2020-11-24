@@ -2,6 +2,7 @@ import Head from "next/head";
 import router from "next/router";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
+import Layout from "../components/layout";
 import styles from "../styles/Home.module.css";
 
 export default function Home({ spotify, playerName }) {
@@ -139,89 +140,81 @@ export default function Home({ spotify, playerName }) {
       });
   };
   return (
-    <div className={styles.container}>
-      <Head>
-        <script src="https://sdk.scdn.co/spotify-player.js"></script>
-        <title>Spotify</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <Layout>
+        <Head>
+          <script src="https://sdk.scdn.co/spotify-player.js"></script>
+          <title>Spotify</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Spotify Test</h1>
+        <main className={styles.main}>
+          <h1 className={styles.title}>Spotify Test</h1>
 
-        <img id="current-track" />
-        <h3 id="current-track-name"></h3>
+          <img id="current-track" />
+          <h3 id="current-track-name"></h3>
 
-        <div className={styles.description}>
-          <p>Search Songs</p>
-          <input
-            className={styles.search}
-            label="Search Songs"
-            value={searchText}
-            onChange={(e) => getSearchInfo(e.target.value)}
-          />
-        </div>
-        <div className={styles.description}>
-          {tracks?.length ? (
-            <>
-              <h2 style={{ marginBottom: 0 }}>Artists</h2>
-              <div className={styles.grid}>
-                {artists.map((artist) => (
-                  <div
-                    onClick={() => showArtistAlbums(artist.id)}
-                    className={styles.card}
-                  >
-                    <img
-                      src={artist?.images[0]?.url}
-                      width={175}
-                      height={175}
-                      style={{ borderRadius: "50%" }}
-                    />
+          <div className={styles.description}>
+            <p>Search Songs</p>
+            <input
+              className={styles.search}
+              label="Search Songs"
+              value={searchText}
+              onChange={(e) => getSearchInfo(e.target.value)}
+            />
+          </div>
+          <div className={styles.description}>
+            {tracks?.length ? (
+              <>
+                <h2 style={{ marginBottom: 0 }}>Artists</h2>
+                <div className={styles.grid}>
+                  {artists.map((artist) => (
+                    <div
+                      onClick={() => showArtistAlbums(artist.id)}
+                      className={styles.card}
+                    >
+                      <img
+                        src={artist?.images[0]?.url}
+                        width={175}
+                        height={175}
+                        style={{ borderRadius: "50%" }}
+                      />
 
-                    <p style={{ width: 175 }}>{artist?.name}</p>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : null}
+                      <p style={{ width: 175 }}>{artist?.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : null}
 
-          {tracks?.length ? (
-            <>
-              <h2 style={{ marginBottom: 0 }}>Songs</h2>
+            {tracks?.length ? (
+              <>
+                <h2 style={{ marginBottom: 0 }}>Songs</h2>
 
-              <div className={styles.grid}>
-                {tracks.map((track) => (
-                  <div
-                    onClick={() => playSomething(track.uri)}
-                    className={styles.card}
-                  >
-                    <img
-                      src={track?.album?.images[0]?.url}
-                      width={175}
-                      height={175}
-                    />
-                    <p className={styles.track} style={{ width: 175 }}>
-                      {track?.name}
-                    </p>
-                    <p className={styles.artist}>{track?.artists[0]?.name}</p>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : null}
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://www.linkedin.com/in/ntarasiuk"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by Nate Tarasiuk
-        </a>
-      </footer>
-    </div>
+                <div className={styles.grid}>
+                  {tracks.map((track) => (
+                    <div
+                      onClick={() => playSomething(track.uri)}
+                      className={styles.card}
+                    >
+                      <img
+                        src={track?.album?.images[0]?.url}
+                        width={175}
+                        height={175}
+                      />
+                      <p className={styles.track} style={{ width: 175 }}>
+                        {track?.name}
+                      </p>
+                      <p className={styles.artist}>{track?.artists[0]?.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : null}
+          </div>
+        </main>
+      </Layout>
+    </>
   );
 }
 export async function getServerSideProps(ctx) {
