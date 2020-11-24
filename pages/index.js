@@ -1,51 +1,51 @@
 import Head from "next/head";
 import Link from "next/link";
-import Header from "../components/header";
+import Layout from "../components/layout";
 import { useUser } from "../lib/hooks";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const user = useUser();
-  console.log(user);
   return (
     <>
-      <Header />
-      <div className={styles.container}>
+      <Layout>
         <Head>
-          <title>Next | Hasura | Passport</title>
+          <title>Next | Hasura | JWT</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className={styles.main}>
-          <h1 className={styles.title}>
-            Hasura 😈 + NextJS ⚛ + Apollo 🚀 + Passport 🔐
-          </h1>
-
-          <div className={styles.description}>
-            {user ? (
-              <>
-                <p>Hello, {user.name}</p>
-                <Link href="/api/logout">
-                  <button>Logout</button>
+        <div className="grid place-items-center text-center ">
+          <div>
+            <h1 className="text-4xl py-5">😈 + ⚛ + 🚀 + 🔐</h1>
+            <p>Hasura, NextJS, Apollo, JWT</p>
+            <div className={styles.description}>
+              {user ? (
+                <>
+                  <p>Hello, {user.name}</p>
+                  <Link href="/api/logout">
+                    <button
+                      type="button"
+                      class="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md  text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                    >
+                      Logout
+                    </button>
+                  </Link>
+                </>
+              ) : (
+                <Link href="/login">
+                  <a>
+                    <button
+                      type="button"
+                      class="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                    >
+                      Login
+                    </button>
+                  </a>
                 </Link>
-              </>
-            ) : (
-              <Link href="/login">
-                <a>Login</a>
-              </Link>
-            )}
+              )}
+            </div>
           </div>
-        </main>
-
-        <footer className={styles.footer}>
-          <a
-            href="https://www.linkedin.com/in/ntarasiuk"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by Nate Tarasiuk
-          </a>
-        </footer>
-      </div>
+        </div>
+      </Layout>
     </>
   );
 }

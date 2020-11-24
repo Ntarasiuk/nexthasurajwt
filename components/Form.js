@@ -1,87 +1,108 @@
 import Link from "next/link";
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => (
-  <form onSubmit={onSubmit}>
-    <label>
-      <span>Username</span>
-      <input type="text" name="username" required />
-    </label>
-    {!isLogin && (
-      <label>
-        <span>Name</span>
-        <input type="text" name="name" required />
-      </label>
-    )}
-    <label>
-      <span>Password</span>
-      <input type="password" name="password" required />
-    </label>
-    {!isLogin && (
-      <label>
-        <span>Repeat password</span>
-        <input type="password" name="rpassword" required />
-      </label>
-    )}
+  <form onSubmit={onSubmit} className="mt-6">
+    <div className="grid min-h-screen place-items-center">
+      <div className="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
+        <h1 className="text-xl font-semibold">
+          <span className="font-normal text-2xl">Sign in to continue</span>
+        </h1>
+        {errorMessage && (
+          <p className="text-red-600 text-xl text-center">{errorMessage}</p>
+        )}
 
-    <div className="submit">
-      {isLogin ? (
-        <>
-          <Link href="/signup">
-            <a>I don't have an account</a>
-          </Link>
-          <button type="submit">Login</button>
-        </>
-      ) : (
-        <>
-          <Link href="/login">
-            <a>I already have an account</a>
-          </Link>
-          <button type="submit">Signup</button>
-        </>
-      )}
+        <label
+          htmlFor="email"
+          className="block text-xs font-semibold text-gray-600 uppercase"
+        >
+          E-mail
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="jon.snow@company.com"
+            autoComplete="email"
+            className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
+        </label>
+
+        {!isLogin && (
+          <>
+            <label
+              htmlFor="name"
+              className="block text-xs font-semibold text-gray-600 uppercase"
+            >
+              Name
+            </label>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Jon Snow"
+              className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+              required
+            />
+          </>
+        )}
+        <label
+          htmlFor="password"
+          className="block mt-2 text-xs font-semibold text-gray-600 uppercase"
+        >
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="********"
+          autoComplete="current-password"
+          className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+          required
+        />
+        {!isLogin && (
+          <>
+            <label
+              htmlFor="rpassword"
+              className="block mt-2 text-xs font-semibold text-gray-600 uppercase"
+            >
+              Repeat password
+            </label>
+            <input
+              id="rpassword"
+              type="password"
+              name="rpassword"
+              placeholder="********"
+              autoComplete="current-password"
+              className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+              required
+            />
+          </>
+        )}
+
+        <button
+          type="submit"
+          className="rounded-lg w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+        >
+          Sign in
+        </button>
+        <div className="submit" className="py-3">
+          {isLogin ? (
+            <>
+              <Link href="/signup">
+                <a>I don't have an account</a>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <a>I already have an account</a>
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
     </div>
-
-    {errorMessage && <p className="error">{errorMessage}</p>}
-
-    <style jsx>{`
-      form,
-      label {
-        display: flex;
-        flex-flow: column;
-      }
-      label > span {
-        font-weight: 600;
-      }
-      input {
-        padding: 8px;
-        margin: 0.3rem 0 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .submit {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .submit > a {
-        text-decoration: none;
-      }
-      .submit > button {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .submit > button:hover {
-        border-color: #888;
-      }
-      .error {
-        color: brown;
-        margin: 1rem 0 0;
-      }
-    `}</style>
   </form>
 );
 

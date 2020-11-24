@@ -2,7 +2,6 @@ import Axios from "axios";
 import Router from "next/router";
 import { useState } from "react";
 import Form from "../components/form";
-import Layout from "../components/layout";
 import { useUser } from "../lib/hooks";
 
 const Login = () => {
@@ -16,7 +15,7 @@ const Login = () => {
     if (errorMsg) setErrorMsg("");
 
     const body = {
-      username: e.currentTarget.username.value.toLowerCase(),
+      email: e.currentTarget.email.value.toLowerCase(),
       password: e.currentTarget.password.value,
     };
 
@@ -29,26 +28,12 @@ const Login = () => {
       }
     } catch (error) {
       console.error("An unexpected error happened occurred:", error);
+      if (error?.response?.data) return setErrorMsg(error?.response?.data);
       setErrorMsg(error.message);
     }
   }
 
-  return (
-    <Layout>
-      <div className="login">
-        <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
-      </div>
-      <style jsx>{`
-        .login {
-          max-width: 21rem;
-          margin: 0 auto;
-          padding: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-      `}</style>
-    </Layout>
-  );
+  return <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />;
 };
 
 export default Login;
