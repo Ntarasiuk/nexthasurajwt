@@ -15,7 +15,7 @@ export default async function login(req, res) {
     function next() {
       console.log(arguments);
     }
-    return await passport.authenticate("login", async (err, user, info) => {
+    return await passport.authenticate("login", {session: true}, async (err, user, info) => {
       console.log(info);
       try {
         if (err || !user) {

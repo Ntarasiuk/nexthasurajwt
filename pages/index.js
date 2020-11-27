@@ -24,7 +24,7 @@ export default function Home() {
                   <Link href="/api/logout">
                     <button
                       type="button"
-                      class="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md  text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                      className="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md  text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
                     >
                       Logout
                     </button>
@@ -35,7 +35,7 @@ export default function Home() {
                   <a>
                     <button
                       type="button"
-                      class="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                      className="my-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
                     >
                       Login
                     </button>
