@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const Form = ({ isLogin, errorMessage, onSubmit }) => (
+const Form = ({ isLogin, errorMessage, onSubmit, googleAuth }) => (
   <form onSubmit={onSubmit} className="mt-6">
     <div className="grid min-h-screen place-items-center">
       <div className="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
@@ -86,6 +86,15 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
         >
           Sign in
         </button>
+        {googleAuth && (
+          <button
+            onClick={googleAuth}
+            className="rounded-lg w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+          >
+            Continue with Google
+          </button>
+        )}
+
         <div className="submit" className="py-3">
           {isLogin ? (
             <>

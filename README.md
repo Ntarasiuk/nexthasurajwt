@@ -51,3 +51,4 @@ Some inspirational links that helped me:
 - https://github.com/vnovick/graphql-jwt-tutorial
 - https://github.com/vercel/next.js/tree/canary/examples/with-apollo
 - https://github.com/vercel/next.js/tree/canary/examples/with-passport
+- https://www.digitalocean.com/community/tutorials/api-authentication-with-json-web-tokensjwt-and-passport

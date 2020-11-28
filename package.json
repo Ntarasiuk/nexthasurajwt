@@ -30,6 +30,8 @@
     "next-with-apollo": "^5.1.0",
     "nookies": "^2.5.0",
     "passport": "^0.4.1",
+    "passport-google-oauth": "^2.0.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "postcss": "^8.1.10",

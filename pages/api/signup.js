@@ -1,10 +1,10 @@
 import passport from "passport";
-import { usePassport } from "../../lib/auth/auth";
+import { usePassportLocal } from "../../lib/auth/auth";
 
 export default async function signup(req, res) {
   try {
     const {name} = req.body
-    await usePassport({name});
+    await usePassportLocal({name});
 
     function next() {
       console.log(arguments);

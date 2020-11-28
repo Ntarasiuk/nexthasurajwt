@@ -9,6 +9,13 @@ const Login = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  async function googleAuth(e) {
+    e.preventDefault();
+
+    if (errorMsg) setErrorMsg("");
+    Router.push('/api/google')
+  }
+  
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -33,7 +40,7 @@ const Login = () => {
     }
   }
 
-  return <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />;
+  return <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} googleAuth={googleAuth} />;
 };
 
 export default Login;

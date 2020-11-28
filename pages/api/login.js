@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { setTokenCookie } from "../../lib/auth/authCookies";
 import { encryptSession } from "../../lib/auth/iron";
-import { usePassport } from "../../lib/auth/auth";
+import { usePassportLocal } from "../../lib/auth/auth";
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const passport = require("passport");
 
@@ -10,7 +10,7 @@ const passport = require("passport");
 export default async function login(req, res) {
   try {
 
-    await usePassport();
+    await usePassportLocal();
 
     function next() {
       console.log(arguments);
