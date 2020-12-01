@@ -12,7 +12,7 @@ $$;
 CREATE TABLE public.membership (
     role text NOT NULL,
     user_id uuid NOT NULL,
-    organization_id uuid,
+    organization_id uuid NOT NULL,
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     active boolean DEFAULT false
 );
@@ -28,13 +28,19 @@ CREATE TABLE public."user" (
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     email character varying NOT NULL,
     name character varying,
-    password text
+    password text,
+    provider character varying,
+    sub text,
+    picture text,
+    last_seen timestamp with time zone DEFAULT now()
 );
 CREATE TABLE public.user_roles (
     role text NOT NULL
 );
+INSERT INTO public.user_roles (role) VALUES ('user');
+INSERT INTO public.user_roles (role) VALUES ('admin');
 ALTER TABLE ONLY public.membership
-    ADD CONSTRAINT membership_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT membership_pkey PRIMARY KEY (id, user_id);
 ALTER TABLE ONLY public.organization
     ADD CONSTRAINT organization_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public."user"
