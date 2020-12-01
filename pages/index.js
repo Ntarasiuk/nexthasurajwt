@@ -20,6 +20,8 @@ export default function Home() {
             <div className={styles.description}>
               {user ? (
                 <>
+                  {user.picture ? <img class="w-24 h-24 mt-6 rounded-full mx-auto" src={user.picture} alt="" width="384" height="512" /> :null }
+
                   <p>Hello, {user.name}</p>
                   <Link href="/api/logout">
                     <button
