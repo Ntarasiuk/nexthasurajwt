@@ -1,6 +1,5 @@
 package-lock.json
 node_modules
 .next
-.env
+.env.local
 ngrok.exe
-.env*

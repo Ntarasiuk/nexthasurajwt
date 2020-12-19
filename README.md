@@ -18,6 +18,18 @@ To add the Apollo HOC to a page, just export `withApollo` at the bottom of a pag
 export default withApollo({ ssr: true })(pageName);
 ```
 
+## Environment setup
+---
+Edit `.env.example` with the values and change the name to `.env.local`
+
+In order to add more authentication flows, install the packages from [passport](http://www.passportjs.org/packages/)
+
+Here are some links to get started with other authentication providers
+
+- [GitHub OAuth](https://docs.github.com/en/free-pro-team@latest/developers/apps/creating-an-oauth-app)
+- [Google OAuth](https://developers.google.com/identity/protocols/oauth2)
+- [Twitter OAuth](https://developer.twitter.com/en/docs/apps/overview)
+- [Facebook OAuth](https://developers.facebook.com/docs/facebook-login/web)
 
 ## Hasura
 ---
