@@ -1,7 +1,7 @@
 import Router from "next/router";
 import { useState } from "react";
-import Form from "../components/form";
-import Layout from "../components/layout";
+import Form from "components/form";
+import Layout from "components/layout";
 
 const Signup = () => {
 
@@ -41,8 +41,8 @@ const Signup = () => {
   }
 
   return (
-    <Layout>
-      <div className="login">
+    <Layout title="Sign up">
+      <div>
         <Form isLogin={false} errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
     </Layout>

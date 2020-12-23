@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
-import { useUser } from "../lib/hooks";
+import { useUser } from "lib/hooks";
 
 const Header = () => {
   const router = useRouter();
@@ -94,7 +94,7 @@ const Header = () => {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={user?.picture}
                         alt=""
                       />
                     </button>

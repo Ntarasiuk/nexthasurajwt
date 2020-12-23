@@ -1,8 +1,9 @@
 import Axios from "axios";
 import Router from "next/router";
 import { useState } from "react";
-import Form from "../components/form";
-import { useUser } from "../lib/hooks";
+import Form from "components/form";
+import { useUser } from "lib/hooks";
+import Layout from "components/layout";
 
 const Login = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -40,7 +41,7 @@ const Login = () => {
     }
   }
 
-  return <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} googleAuth={googleAuth} />;
+  return <Layout title="Sign in"><Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} googleAuth={googleAuth} /></Layout>;
 };
 
 export default Login;

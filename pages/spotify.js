@@ -2,8 +2,8 @@ import Head from "next/head";
 import router from "next/router";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
-import Layout from "../components/layout";
-import styles from "../styles/Home.module.css";
+import Layout from "components/layout";
+import styles from "styles/Home.module.css";
 
 export default function Home({ spotify, playerName }) {
   let spotifyPlayer = null;

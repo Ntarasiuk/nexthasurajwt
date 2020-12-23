@@ -1,7 +1,7 @@
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import { setTokenCookie } from "../../../lib/auth/authCookies";
-import { encryptSession } from "../../../lib/auth/iron";
+import { setTokenCookie } from "lib/auth/authCookies";
+import { encryptSession } from "lib/auth/iron";
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const host = process.env.APP_HOST;
 

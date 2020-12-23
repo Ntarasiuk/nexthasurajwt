@@ -2,10 +2,10 @@ import Link from "next/link";
 
 const Form = ({ isLogin, errorMessage, onSubmit, googleAuth }) => (
   <form onSubmit={onSubmit} className="mt-6">
-    <div className="grid min-h-screen place-items-center">
+    <div className="grid place-items-center">
       <div className="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
-        <h1 className="text-xl font-semibold">
-          <span className="font-normal text-2xl">Sign in to continue</span>
+        <h1 className="text-xl font-semibold mb-4">
+          <span className="font-normal text-2xl">{isLogin? 'Sign in' : 'Sign up'} to continue</span>
         </h1>
         {errorMessage && (
           <p className="text-red-600 text-xl text-center">{errorMessage}</p>

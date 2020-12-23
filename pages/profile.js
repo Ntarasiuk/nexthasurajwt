@@ -1,7 +1,7 @@
 import { gql, useSubscription } from "@apollo/react-hooks";
 import React from "react";
-import Layout from "../components/layout";
-import { withApollo } from "../lib/apollo/withApollo";
+import Layout from "components/layout";
+import { withApollo } from "lib/apollo/withApollo";
 const GET_USER_ORGANIZATION = gql`
   subscription MySubscription {
   
@@ -22,7 +22,7 @@ const GET_USER_ORGANIZATION = gql`
 function profile() {
   const { data, error, loading } = useSubscription(GET_USER_ORGANIZATION);
   return (
-    <Layout>
+    <Layout title="Profile">
       <div className="grid min-h-screen place-items-center ">
         <div>
           <p>This is a Subscription Query</p>

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import { usePassportGoogle } from "../../../lib/auth/auth";
-import { setTokenCookie } from "../../../lib/auth/authCookies";
-import { encryptSession } from "../../../lib/auth/iron";
+import { usePassportGoogle } from "lib/auth/auth";
+import { setTokenCookie } from "lib/auth/authCookies";
+import { encryptSession } from "lib/auth/iron";
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 export default async function handler(req, res) {

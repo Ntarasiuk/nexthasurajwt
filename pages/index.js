@@ -1,11 +1,36 @@
 import Head from "next/head";
 import Link from "next/link";
-import Layout from "../components/layout";
-import { useUser } from "../lib/hooks";
-import styles from "../styles/Home.module.css";
+import Layout from "components/layout";
+import { useUser } from "lib/hooks";
+import styles from "styles/Home.module.css";
+import { gql, useQuery } from "@apollo/react-hooks";
+import { useEffect } from "react";
+import { withApollo } from "lib/apollo/withApollo";
+import { useRouter } from "next/router";
 
-export default function Home() {
+function Home() {
   const user = useUser();
+  const router = useRouter()
+  // check if user is first time user
+  const { data, error } = useQuery(
+    gql`
+        query($sub: uuid!){
+            user_by_pk(id:$sub )
+                {
+                    id
+                    first_time_login
+                }
+        }
+        `,
+    { variables: { sub: user?.sub } }
+  );
+
+  useEffect(() => {
+      if(data?.user_by_pk && data?.user_by_pk?.first_time_login) {
+        router.push('/team')
+      }
+  }, [data?.user_by_pk])
+
   return (
     <>
       <Layout>
@@ -51,3 +76,5 @@ export default function Home() {
     </>
   );
 }
+
+export default withApollo({ ssr: false })(Home);

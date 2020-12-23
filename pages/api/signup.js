@@ -1,5 +1,5 @@
 import passport from "passport";
-import { usePassportLocal } from "../../lib/auth/auth";
+import { usePassportLocal } from "lib/auth/auth";
 
 export default async function signup(req, res) {
   try {
