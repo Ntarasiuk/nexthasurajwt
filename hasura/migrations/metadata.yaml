@@ -10,6 +10,37 @@ tables:
   - name: user
     using:
       foreign_key_constraint_on: user_id
+  insert_permissions:
+  - role: orgAdmin
+    permission:
+      check:
+        user:
+          id:
+            _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-user-id
+      columns:
+      - role
+      - user_id
+      - organization_id
+      - id
+      - active
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        user:
+          id:
+            _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-user-id
+      columns:
+      - role
+      - user_id
+      - organization_id
+      - id
+      - active
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:
@@ -18,6 +49,20 @@ tables:
       - id
       - role
       filter: {}
+  - role: orgAdmin
+    permission:
+      columns:
+      - active
+      - role
+      - id
+      - organization_id
+      - user_id
+      filter:
+        _or:
+        - user_id:
+            _eq: X-Hasura-User-Id
+        - organization_id:
+            _eq: X-Hasura-org-id
   - role: user
     permission:
       columns:
@@ -30,6 +75,22 @@ tables:
         user:
           id:
             _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: orgAdmin
+    permission:
+      columns:
+      - active
+      - role
+      - id
+      - organization_id
+      - user_id
+      filter:
+        _or:
+        - user_id:
+            _eq: X-Hasura-User-Id
+        - organization_id:
+            _eq: X-Hasura-org-id
+      check: null
 - table:
     schema: public
     name: organization
@@ -41,6 +102,25 @@ tables:
         table:
           schema: public
           name: membership
+  insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - name
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - name
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:
@@ -48,6 +128,16 @@ tables:
       - id
       - name
       filter: {}
+  - role: orgAdmin
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - name
+      filter:
+        id:
+          _eq: X-Hasura-org-id
   - role: user
     permission:
       columns:
@@ -60,6 +150,24 @@ tables:
           user:
             id:
               _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: orgAdmin
+    permission:
+      columns:
+      - name
+      - created_at
+      - updated_at
+      - id
+      filter:
+        id:
+          _eq: X-Hasura-org-id
+      check: null
+  delete_permissions:
+  - role: orgAdmin
+    permission:
+      filter:
+        id:
+          _eq: X-Hasura-org-id
 - table:
     schema: public
     name: user
@@ -77,23 +185,52 @@ tables:
       columns:
       - created_at
       - email
+      - first_time_login
       - id
       - name
       - password
+      - sub
+      - updated_at
+      filter: {}
+  - role: orgAdmin
+    permission:
+      columns:
+      - created_at
+      - email
+      - first_time_login
+      - id
+      - name
+      - password
+      - sub
       - updated_at
       filter: {}
   - role: user
     permission:
       columns:
-      - id
       - created_at
-      - updated_at
       - email
+      - first_time_login
+      - id
       - name
       - password
+      - picture
+      - sub
+      - updated_at
       filter:
         id:
           _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      - first_time_login
+      - name
+      - picture
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
 - table:
     schema: public
     name: user_roles
