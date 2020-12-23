@@ -2,10 +2,8 @@ import Router from "next/router";
 import { useState } from "react";
 import Form from "../components/form";
 import Layout from "../components/layout";
-import { useUser } from "../lib/hooks";
 
 const Signup = () => {
-  useUser({ redirectTo: "/", redirectIfFound: true });
 
   const [errorMsg, setErrorMsg] = useState("");
 

@@ -6,7 +6,7 @@ import { useUser } from "../lib/hooks";
 
 const Header = () => {
   const router = useRouter();
-  const user = useUser({redirectTo: '/'});
+  const user = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header>
