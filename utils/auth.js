@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Router from "next/router";
 import nextCookie from "next-cookies";
+const host = process.env.APP_HOST;
 
 let inMemoryToken;
 
@@ -113,10 +114,9 @@ async function auth(ctx) {
             Cookie: ctx.req.headers.cookie,
           }
         : {};
-    // const hostname = typeof window === 'object' ? `${window.location.protocol}${window.location.host}` : `${ctx.req?.headers?.referer.split('://')[0]}://${ctx.req.headers.host}`
-    const hostname = "http://localhost:3000";
+    // const hostname = "http://localhost:3000";
     const url =
-      ctx && ctx.req ? `${hostname}/api/refresh-token` : "/api/refresh-token";
+      ctx && ctx.req ? `${host}/api/refresh-token` : "/api/refresh-token";
     console.log(url);
     try {
       const response = await fetch(url, {

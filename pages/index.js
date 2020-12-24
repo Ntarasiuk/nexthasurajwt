@@ -8,26 +8,13 @@ import { useEffect } from "react";
 import { withApollo } from "lib/apollo/withApollo";
 import { useRouter } from "next/router";
 import { withAuthSync } from "utils/auth";
+import { USER_QUERY } from "./queries/user";
 
 function Home() {
   const router = useRouter()
   // check if user is first time user
   const { data, error } = useQuery(
-    gql`
-        query{
-            user
-                {
-                  id
-                  first_time_login
-                  name
-                  picture
-                  memberships {
-                    id
-                  }
-                }
-        }
-        `,
-    
+    USER_QUERY
   );
 let user = data?.user?.[0]
 useEffect(() => {

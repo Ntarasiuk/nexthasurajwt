@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import TeamForm from "components/TeamForm";
 import { withApollo } from "lib/apollo/withApollo";
 import { gql, useMutation, useQuery } from "@apollo/react-hooks";
-import { useUser } from "lib/hooks";
 import { useRouter } from "next/router";
 import Axios from "axios";
 import { withAuthSync } from "utils/auth";
+import { USER_QUERY } from "./queries/user";
 function TeamPage() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
@@ -18,44 +18,39 @@ function TeamPage() {
         user {
           id
           first_time_login
-          
         }
       }
     `
   );
   let user = data?.user?.[0];
 
-  
-
-  const [insertTeam] = useMutation(gql`
-    mutation($name: String!) {
-      insert_organization_one(
-        object: {
-          name: $name
-          memberships: { data: { active: true, role: orgAdmin } }
-        }
-      ) {
-        id
-        name
-        memberships {
+  const [insertTeam] = useMutation(
+    gql`
+      mutation($name: String!, $id: uuid!) {
+        insert_organization_one(
+          object: {
+            name: $name
+            memberships: { data: { active: true, role: orgAdmin } }
+          }
+        ) {
           id
-          role
+          name
+          memberships {
+            id
+            role
+          }
+        }
+        update_user_by_pk(
+          pk_columns: { id: $id }
+          _set: { first_time_login: false }
+        ) {
+          id
+          first_time_login
         }
       }
-    }
-  `);
-
-  const [updateFirstTimeLogin] = useMutation(gql`
-    mutation($id: uuid!) {
-      update_user_by_pk(
-        pk_columns: { id: $id }
-        _set: { first_time_login: false }
-      ) {
-        id
-        first_time_login
-      }
-    }
-  `);
+    `,
+    { refetchQueries: [{ query: USER_QUERY }] }
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -76,13 +71,13 @@ function TeamPage() {
       const insertedTeam = await insertTeam({
         variables: {
           name: body.name,
+          id: user?.id,
         },
       });
       if (insertedTeam?.data?.insert_organization_one?.id) {
         // TODO: update claims
         await Axios("/api/refresh-token");
         // redirect to home
-        await updateFirstTimeLogin({ variables: { id: user?.id } });
         router.push("/");
       }
     } catch (error) {

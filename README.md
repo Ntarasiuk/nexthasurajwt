@@ -12,7 +12,8 @@ yarn install
 .vscode settings are ready to use. Just press F5 or start the debugger to get goin!
 or use  `yarn dev`
 
-To add the Apollo HOC to a page, just export `withApollo` at the bottom of a page
+Authenticated routes will use the `withAuthSync` HOC, and to add the Apollo HOC to a page, just export `withApollo` at the bottom of a page
+
 
 ``` javascript
 export default withAuthSync(withApollo(pageName));
@@ -21,8 +22,6 @@ export default withAuthSync(withApollo(pageName));
 ## Environment setup
 ---
 Edit `.env.example` with the values and change the name to `.env.local`
-
-In order to add more authentication flows, install the packages from [passport](http://www.passportjs.org/packages/)
 
 Here are some links to get started with other authentication providers
 
@@ -60,7 +59,6 @@ hasura metadata apply --endpoint "<endpoint>" --admin-secret "<admin-secret>"
 
 
 Some inspirational links that helped me:
+- https://hasura.io/blog/best-practices-of-using-jwt-with-graphql
 - https://github.com/vnovick/graphql-jwt-tutorial
 - https://github.com/vercel/next.js/tree/canary/examples/with-apollo
-- https://github.com/vercel/next.js/tree/canary/examples/with-passport
-- https://www.digitalocean.com/community/tutorials/api-authentication-with-json-web-tokensjwt-and-passport

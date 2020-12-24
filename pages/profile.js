@@ -24,7 +24,7 @@ function profile() {
   const { data, error, loading } = useSubscription(GET_USER_ORGANIZATION);
   return (
     <Layout title="Profile">
-      <div className="grid min-h-screen place-items-center ">
+      <div className="grid place-items-center ">
         <div>
           <p>This is a Query</p>
           <pre>{JSON.stringify(data, null, 4)}</pre>
