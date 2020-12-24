@@ -1,7 +1,13 @@
-import { removeTokenCookie } from "lib/auth/authCookies";
+import cookies from 'utils/backend/cookies';
 
-export default async function logout(req, res) {
-  removeTokenCookie(res);
+const handler = async (req, res) => {
+  res.cookie('refresh_token', "", {
+    httpOnly: true,
+    path: '/',
+    expires: new Date(0)
+  });
   res.writeHead(302, { Location: "/" });
   res.end();
-}
+};
+
+export default cookies(handler);

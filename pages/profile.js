@@ -2,8 +2,9 @@ import { gql, useSubscription } from "@apollo/react-hooks";
 import React from "react";
 import Layout from "components/layout";
 import { withApollo } from "lib/apollo/withApollo";
+import { withAuthSync } from "utils/auth";
 const GET_USER_ORGANIZATION = gql`
-  subscription MySubscription {
+  query {
   
     membership {
       role
@@ -25,7 +26,7 @@ function profile() {
     <Layout title="Profile">
       <div className="grid min-h-screen place-items-center ">
         <div>
-          <p>This is a Subscription Query</p>
+          <p>This is a Query</p>
           <pre>{JSON.stringify(data, null, 4)}</pre>
   {error ? <p className="text-red-500">There's an error! {JSON.stringify(error)}</p> :null }
         </div>
@@ -34,4 +35,4 @@ function profile() {
   );
 }
 
-export default withApollo({ ssr: true })(profile);
+export default withAuthSync(withApollo(profile))

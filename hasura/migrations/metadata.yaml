@@ -170,6 +170,13 @@ tables:
           _eq: X-Hasura-org-id
 - table:
     schema: public
+    name: refresh_tokens
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: public
     name: user
   array_relationships:
   - name: memberships
@@ -180,18 +187,6 @@ tables:
           schema: public
           name: membership
   select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-      - created_at
-      - email
-      - first_time_login
-      - id
-      - name
-      - password
-      - sub
-      - updated_at
-      filter: {}
   - role: orgAdmin
     permission:
       columns:

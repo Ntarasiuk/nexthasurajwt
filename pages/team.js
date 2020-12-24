@@ -6,29 +6,26 @@ import { gql, useMutation, useQuery } from "@apollo/react-hooks";
 import { useUser } from "lib/hooks";
 import { useRouter } from "next/router";
 import Axios from "axios";
+import { withAuthSync } from "utils/auth";
 function TeamPage() {
   const router = useRouter();
-  const user = useUser();
   const [errorMsg, setErrorMsg] = useState("");
 
   // check if user is first time user
   const { data, error } = useQuery(
     gql`
-      query($sub: uuid!) {
-        user_by_pk(id: $sub) {
+      query {
+        user {
           id
           first_time_login
+          
         }
       }
-    `,
-    { variables: { sub: user?.sub } }
+    `
   );
+  let user = data?.user?.[0];
 
-  useEffect(() => {
-    if (data?.user_by_pk && !data?.user_by_pk?.first_time_login) {
-      router.push("/");
-    }
-  }, [data?.user_by_pk]);
+  
 
   const [insertTeam] = useMutation(gql`
     mutation($name: String!) {
@@ -83,9 +80,9 @@ function TeamPage() {
       });
       if (insertedTeam?.data?.insert_organization_one?.id) {
         // TODO: update claims
-        await Axios.post("/api/refresh", { id: user?.sub });
+        await Axios("/api/refresh-token");
         // redirect to home
-        await updateFirstTimeLogin({variables: {id: user?.sub}})
+        await updateFirstTimeLogin({ variables: { id: user?.id } });
         router.push("/");
       }
     } catch (error) {
@@ -104,4 +101,4 @@ function TeamPage() {
   );
 }
 
-export default withApollo({ ssr: false })(TeamPage);
+export default withAuthSync(withApollo(TeamPage));

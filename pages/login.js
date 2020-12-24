@@ -4,6 +4,7 @@ import { useState } from "react";
 import Form from "components/form";
 import { useUser } from "lib/hooks";
 import Layout from "components/layout";
+import { login } from "utils/auth";
 
 const Login = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -16,7 +17,7 @@ const Login = () => {
     if (errorMsg) setErrorMsg("");
     Router.push('/api/google')
   }
-  
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -30,6 +31,8 @@ const Login = () => {
     try {
       const res = await Axios.post("/api/login", body);
       if (res.status === 200) {
+        const { jwt_token, jwt_token_expiry } = res.data
+        await login({ jwt_token, jwt_token_expiry })
         Router.push("/");
       } else {
         throw new Error(await res.text());

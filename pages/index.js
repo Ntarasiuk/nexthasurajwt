@@ -7,29 +7,35 @@ import { gql, useQuery } from "@apollo/react-hooks";
 import { useEffect } from "react";
 import { withApollo } from "lib/apollo/withApollo";
 import { useRouter } from "next/router";
+import { withAuthSync } from "utils/auth";
 
 function Home() {
-  const user = useUser();
   const router = useRouter()
   // check if user is first time user
   const { data, error } = useQuery(
     gql`
-        query($sub: uuid!){
-            user_by_pk(id:$sub )
+        query{
+            user
                 {
+                  id
+                  first_time_login
+                  name
+                  picture
+                  memberships {
                     id
-                    first_time_login
+                  }
                 }
         }
         `,
-    { variables: { sub: user?.sub } }
+    
   );
+let user = data?.user?.[0]
+useEffect(() => {
+  if(user && (user?.first_time_login || user?.memberships.length === 0)) {
+    router.push('/team')
+  }
+}, [user])
 
-  useEffect(() => {
-      if(data?.user_by_pk && data?.user_by_pk?.first_time_login) {
-        router.push('/team')
-      }
-  }, [data?.user_by_pk])
 
   return (
     <>
@@ -77,4 +83,4 @@ function Home() {
   );
 }
 
-export default withApollo({ ssr: false })(Home);
+export default withAuthSync(withApollo(Home));

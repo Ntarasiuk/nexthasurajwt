@@ -1,0 +1,234 @@
+- args:
+    tables:
+    - insert_permissions:
+      - permission:
+          backend_only: false
+          check:
+            user:
+              id:
+                _eq: X-Hasura-User-Id
+          columns:
+          - role
+          - user_id
+          - organization_id
+          - id
+          - active
+          set:
+            user_id: x-hasura-user-id
+        role: orgAdmin
+      - permission:
+          backend_only: false
+          check:
+            user:
+              id:
+                _eq: X-Hasura-User-Id
+          columns:
+          - role
+          - user_id
+          - organization_id
+          - id
+          - active
+          set:
+            user_id: x-hasura-user-id
+        role: user
+      object_relationships:
+      - name: organization
+        using:
+          foreign_key_constraint_on: organization_id
+      - name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - permission:
+          columns:
+          - active
+          - id
+          - role
+          filter: {}
+        role: anonymous
+      - permission:
+          columns:
+          - active
+          - role
+          - id
+          - organization_id
+          - user_id
+          filter:
+            _or:
+            - user_id:
+                _eq: X-Hasura-User-Id
+            - organization_id:
+                _eq: X-Hasura-org-id
+        role: orgAdmin
+      - permission:
+          columns:
+          - role
+          - user_id
+          - organization_id
+          - id
+          - active
+          filter:
+            user:
+              id:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: membership
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - active
+          - role
+          - id
+          - organization_id
+          - user_id
+          filter:
+            _or:
+            - user_id:
+                _eq: X-Hasura-User-Id
+            - organization_id:
+                _eq: X-Hasura-org-id
+        role: orgAdmin
+    - array_relationships:
+      - name: memberships
+        using:
+          foreign_key_constraint_on:
+            column: organization_id
+            table:
+              name: membership
+              schema: public
+      delete_permissions:
+      - permission:
+          filter:
+            id:
+              _eq: X-Hasura-org-id
+        role: orgAdmin
+      insert_permissions:
+      - permission:
+          backend_only: false
+          check: {}
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+        role: anonymous
+      - permission:
+          backend_only: false
+          check: {}
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+        role: user
+      select_permissions:
+      - permission:
+          columns:
+          - id
+          - name
+          filter: {}
+        role: anonymous
+      - permission:
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+          filter:
+            id:
+              _eq: X-Hasura-org-id
+        role: orgAdmin
+      - permission:
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+          filter:
+            memberships:
+              user:
+                id:
+                  _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: organization
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - name
+          - created_at
+          - updated_at
+          - id
+          filter:
+            id:
+              _eq: X-Hasura-org-id
+        role: orgAdmin
+    - object_relationships:
+      - name: user
+        using:
+          foreign_key_constraint_on: user_id
+      table:
+        name: refresh_tokens
+        schema: public
+    - array_relationships:
+      - name: memberships
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table:
+              name: membership
+              schema: public
+      select_permissions:
+      - permission:
+          columns:
+          - created_at
+          - email
+          - first_time_login
+          - id
+          - name
+          - password
+          - sub
+          - updated_at
+          filter: {}
+        role: orgAdmin
+      - permission:
+          columns:
+          - created_at
+          - email
+          - first_time_login
+          - id
+          - name
+          - password
+          - picture
+          - sub
+          - updated_at
+          filter:
+            id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: user
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - email
+          - first_time_login
+          - name
+          - picture
+          filter:
+            id:
+              _eq: X-Hasura-User-Id
+        role: user
+    - is_enum: true
+      table:
+        name: user_roles
+        schema: public
+    version: 2
+  type: replace_metadata

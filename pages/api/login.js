@@ -1,42 +1,135 @@
-import jwt from "jsonwebtoken";
-import { setTokenCookie } from "lib/auth/authCookies";
-import { encryptSession } from "lib/auth/iron";
-import { usePassportLocal } from "lib/auth/auth";
-const TOKEN_SECRET = process.env.TOKEN_SECRET;
-const passport = require("passport");
+import Joi from 'joi';
+import bcrypt from 'bcryptjs';
+import {v4 as uuidv4} from 'uuid';
+import auth_tools from 'utils/backend/auth-tools';
+import cookies from 'utils/backend/cookies';
+
+import {
+  REFRESH_TOKEN_EXPIRES,
+  JWT_TOKEN_EXPIRES,
+} from 'utils/backend/config';
+import { graphql_client } from 'utils/backend/graphql-client';
 
 
+const handler = async (req, res) => {
+  // validate email and password
+  const schema = Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+  });
 
-export default async function login(req, res) {
-  try {
+  const { error, value } = schema.validate(req.body);
 
-    await usePassportLocal();
+  if (error) {
+    res.status(400).json(error.details[0].message)
+  }
+  
+  const { email, password } = value;
 
-    function next() {
-      console.log(arguments);
-    }
-    return await passport.authenticate("login", {session: true}, async (err, user, info) => {
-      console.log(info);
-      try {
-        if (err || !user) {
-          const error = new Error(err);
-          console.log(error);
-          return res.status(401).end(error.message);
+  let query = `
+  query FindUser($email: String) {
+    user(where: {email: {_eq: $email}}) {
+        id
+        name
+        picture
+        password
+        email
+        created_at
+        memberships {
+          role
+          active
         }
-
-        req.login(user, { session: true }, async (error) => {
-          const token = jwt.sign(user, TOKEN_SECRET);
-          const encryptedToken = await encryptSession(token);
-          setTokenCookie(res, encryptedToken);
-          res.status(200).json({ done: true });
-        });
-      } catch (error) {
-        res.statusCode = 401;
-        res.status(401).end(error.message);
       }
-    })(req, res, next);
-  } catch (error) {
-    res.status(401).end(error.message);
+    }
+  `;
+
+  let hasura_data;
+  try {
+    hasura_data = await graphql_client.request(query, {
+      email,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(404).json({
+      error: {
+        message: "Unable to find user"
+      }
+    })
   }
 
-}
+  if (hasura_data[`user`].length === 0) {
+    // console.error("No user with this 'email'");
+    res.status(401).json({
+      error: {
+        message: "Invalid 'email' or 'password'"
+      }
+    })
+  }
+
+  // check if we got any user back
+  const user = hasura_data[`user`][0];
+  console.log(user)
+  // see if password hashes matches
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    console.error('Password does not match');
+    res.status(401).json({
+      error: {
+        message: "Invalid 'email' or 'password'"
+      }
+    })
+  }
+  console.warn('user: ' + JSON.stringify(user, null, 2));
+
+  const jwt_token = auth_tools.generateJwtToken(user);
+  const jwt_token_expiry = new Date(new Date().getTime() + (JWT_TOKEN_EXPIRES * 60 * 1000));
+
+  // generate refresh token and put in database
+  query = `
+  mutation (
+    $refresh_token_data: refresh_tokens_insert_input!
+  ) {
+    insert_refresh_tokens (
+      objects: [$refresh_token_data]
+    ) {
+      affected_rows
+    }
+  }
+  `;
+
+  const refresh_token = uuidv4();
+  try {
+    await graphql_client.request(query, {
+      refresh_token_data: {
+        user_id: user.id,
+        refresh_token: refresh_token,
+        expires_at: new Date(new Date().getTime() + (REFRESH_TOKEN_EXPIRES * 60 * 1000)), // convert from minutes to milli seconds
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: {
+        message: "Could not update 'refresh token' for user"
+      }
+    })
+  }
+
+  res.cookie('refresh_token', refresh_token, {
+    maxAge: REFRESH_TOKEN_EXPIRES * 60 * 1000, // convert from minute to milliseconds
+    httpOnly: true,
+    path: '/',
+    secure: false
+  });
+
+  // return jwt token and refresh token to client
+
+  res.status(200).json({
+    jwt_token,
+    refresh_token,
+    jwt_token_expiry
+  });
+};
+
+export default cookies(handler)
