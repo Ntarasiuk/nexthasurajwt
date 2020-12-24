@@ -112,6 +112,15 @@ tables:
       - updated_at
       - name
       backend_only: false
+  - role: orgAdmin
+    permission:
+      check: {}
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - name
+      backend_only: false
   - role: user
     permission:
       check: {}
@@ -196,6 +205,7 @@ tables:
       - id
       - name
       - password
+      - picture
       - sub
       - updated_at
       filter: {}
@@ -215,6 +225,17 @@ tables:
         id:
           _eq: X-Hasura-User-Id
   update_permissions:
+  - role: orgAdmin
+    permission:
+      columns:
+      - email
+      - first_time_login
+      - name
+      - picture
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
   - role: user
     permission:
       columns:
