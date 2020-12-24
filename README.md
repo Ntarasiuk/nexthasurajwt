@@ -1,8 +1,8 @@
-# Hasura 😈 + NextJS ⚛ + Apollo 🚀 + Passport 🔐
+# Hasura 😈 + NextJS ⚛ + Apollo 🚀 + JWT 🔐
 
 ## Next JS
 ---
-This is a starter template for a SSR React app with a database + permissions (Passport JWT).
+This is a starter template for a SSR React app with a database + permissions ( JWT).
 
 
 ```bash
@@ -15,7 +15,7 @@ or use  `yarn dev`
 To add the Apollo HOC to a page, just export `withApollo` at the bottom of a page
 
 ``` javascript
-export default withApollo({ ssr: true })(pageName);
+export default withAuthSync(withApollo(pageName));
 ```
 
 ## Environment setup
