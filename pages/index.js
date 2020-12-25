@@ -1,28 +1,24 @@
+import { useQuery } from "@apollo/react-hooks";
+import Layout from "components/layout";
+import { withApollo } from "lib/apollo/withApollo";
 import Head from "next/head";
 import Link from "next/link";
-import Layout from "components/layout";
-import { useUser } from "lib/hooks";
-import styles from "styles/Home.module.css";
-import { gql, useQuery } from "@apollo/react-hooks";
-import { useEffect } from "react";
-import { withApollo } from "lib/apollo/withApollo";
 import { useRouter } from "next/router";
+import { USER_QUERY } from "queries/user";
+import { useEffect } from "react";
+import styles from "styles/Home.module.css";
 import { withAuthSync } from "utils/auth";
-import { USER_QUERY } from "./queries/user";
 
 function Home() {
-  const router = useRouter()
+  const router = useRouter();
   // check if user is first time user
-  const { data, error } = useQuery(
-    USER_QUERY
-  );
-let user = data?.user?.[0]
-useEffect(() => {
-  if(user && (user?.first_time_login || user?.memberships.length === 0)) {
-    router.push('/team')
-  }
-}, [user])
-
+  const { data, error } = useQuery(USER_QUERY);
+  let user = data?.user?.[0];
+  useEffect(() => {
+    if (user && (user?.first_time_login || user?.memberships.length === 0)) {
+      router.push("/team");
+    }
+  }, [user]);
 
   return (
     <>
@@ -38,7 +34,15 @@ useEffect(() => {
             <div className={styles.description}>
               {user ? (
                 <>
-                  {user.picture ? <img class="w-24 h-24 mt-6 rounded-full mx-auto" src={user.picture} alt="" width="384" height="512" /> :null }
+                  {user.picture ? (
+                    <img
+                      class="w-24 h-24 mt-6 rounded-full mx-auto"
+                      src={user.picture}
+                      alt=""
+                      width="384"
+                      height="512"
+                    />
+                  ) : null}
 
                   <p>Hello, {user.name}</p>
                   <Link href="/api/logout">

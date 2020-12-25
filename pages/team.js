@@ -1,12 +1,12 @@
+import { gql, useMutation, useQuery } from "@apollo/react-hooks";
+import Axios from "axios";
 import Layout from "components/layout";
-import React, { useEffect, useState } from "react";
 import TeamForm from "components/TeamForm";
 import { withApollo } from "lib/apollo/withApollo";
-import { gql, useMutation, useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import Axios from "axios";
+import { USER_QUERY } from "queries/user";
+import React, { useState } from "react";
 import { withAuthSync } from "utils/auth";
-import { USER_QUERY } from "./queries/user";
 function TeamPage() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
