@@ -1,10 +1,9 @@
+import Form from "components/Form";
+import Layout from "components/layout";
 import Router from "next/router";
 import { useState } from "react";
-import Form from "components/form";
-import Layout from "components/layout";
 
 const Signup = () => {
-
   const [errorMsg, setErrorMsg] = useState("");
 
   async function handleSubmit(e) {

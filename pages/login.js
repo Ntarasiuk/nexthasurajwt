@@ -1,8 +1,8 @@
 import Axios from "axios";
+import Form from "components/Form";
+import Layout from "components/layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Form from "components/form";
-import Layout from "components/layout";
 import { login } from "utils/auth";
 
 const Login = () => {
