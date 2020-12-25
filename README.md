@@ -1,12 +1,27 @@
 # Hasura 😈 + NextJS ⚛ + Apollo 🚀 + JWT 🔐
 
+### This is a starter template for a React app with a database + permissions ( JWT).
+
+## Roadmap
+---
+
+- [x] Hasura Database with Apollo integration
+- [x] Authentication based on [best practices](https://hasura.io/blog/best-practices-of-using-jwt-with-graphql) (use JWT in memory, use refresh tokens on the front end - with silent refresh!)
+- [x] Organization and Member authentication in Hasura
+- [x] Google Social login added
+- [ ] Invitation with email
+- [ ] Password reset with email
+- [ ] Change design framework to Material UI or Chakra
+
 ## Next JS
 ---
-This is a starter template for a SSR React app with a database + permissions ( JWT).
 
+To start, use yarn or npm
 
 ```bash
 yarn install
+or
+npm install
 ```
 
 .vscode settings are ready to use. Just press F5 or start the debugger to get goin!
@@ -22,6 +37,19 @@ export default withAuthSync(withApollo(pageName));
 ## Environment setup
 ---
 Edit `.env.example` with the values and change the name to `.env.local`
+
+``` css
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=
+APP_HOST= /* required. e.g. http://localhost:3000 */
+NEXT_PUBLIC_GRAPHQL_API_ENDPOINT= /* your graphql endpoint from hasura */
+HASURA_CONSOLE_PASSWORD= /* admin password from hasura */
+HASURA_GRAPHQL_JWT_SECRET=
+
+```
+
+[Set up JWT on Hasura](https://hasura.io/docs/1.0/graphql/core/auth/authentication/jwt.html#configuring-jwt-mode)
 
 Here are some links to get started with other authentication providers
 
@@ -39,26 +67,31 @@ Create an account and make a Heroku instance
 Once you have the instance url, change the file `/hasura/config.yaml` with the url, and then you can apply the migration
 
 This will add the following tables
+
 - user
 - user_roles
 - membership
+- refresh_tokens
 - organization
 
 and add the following permissions
-- admin
+
+- orgAdmin
 - user
 - anonymous
+
+for some access control ideas, [see here](https://hasura.io/docs/1.0/graphql/core/auth/authorization/common-roles-auth-examples.html)
 
 Migrate user settings:
 
 ```bash
 cd hasura/
-hasura migrate apply --endpoint "<endpoint>" --admin-secret "<admin-secret>"
-hasura metadata apply --endpoint "<endpoint>" --admin-secret "<admin-secret>"
+hasura migrate apply --endpoint "https://<endpoint>.hasura.app" --admin-secret "<admin-secret>"
+hasura metadata apply --endpoint "https://<endpoint>.hasura.app" --admin-secret "<admin-secret>"
 ```
 
-
 Some inspirational links that helped me:
-- https://hasura.io/blog/best-practices-of-using-jwt-with-graphql
-- https://github.com/vnovick/graphql-jwt-tutorial
-- https://github.com/vercel/next.js/tree/canary/examples/with-apollo
+
+- [https://hasura.io/blog/best-practices-of-using-jwt-with-graphql](https://hasura.io/blog/best-practices-of-using-jwt-with-graphql)
+- [https://github.com/vnovick/graphql-jwt-tutorial](https://github.com/vnovick/graphql-jwt-tutorial)
+- [https://github.com/vercel/next.js/tree/canary/examples/with-apollo](https://github.com/vercel/next.js/tree/canary/examples/with-apollo)
