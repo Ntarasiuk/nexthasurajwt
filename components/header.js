@@ -1,12 +1,15 @@
+import { useQuery } from "@apollo/react-hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { USER_QUERY } from "queries/user";
 import { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
-import { useUser } from "lib/hooks";
 
 const Header = () => {
   const router = useRouter();
-  const user = useUser();
+  const { data, error } = useQuery(USER_QUERY);
+  let user = data?.user?.[0];
+
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header>
