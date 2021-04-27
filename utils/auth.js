@@ -1,6 +1,5 @@
-import { Component } from "react";
 import Router from "next/router";
-import nextCookie from "next-cookies";
+import { Component } from "react";
 const host = process.env.APP_HOST;
 
 let inMemoryToken;
@@ -97,12 +96,6 @@ function withAuthSync(WrappedComponent) {
 }
 
 async function auth(ctx) {
-  try {
-    const { refresh_token } = nextCookie(ctx);
-  } catch (error) {
-    console.log(error);
-  }
-
   /*
    * If `ctx.req` is available it means we are on the server.
    * Additionally if there's no token it means the user is not logged in.
